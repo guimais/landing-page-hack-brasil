@@ -519,6 +519,11 @@ a {
 	text-wrap: balance;
 }
 
+.titulo-encaixando .trecho-do-titulo {
+	display: block;
+	will-change: transform;
+}
+
 .titulo-deslizando h2 {
 	width: max-content;
 	white-space: nowrap;
@@ -1297,8 +1302,38 @@ a {
 	}
 
 	.titulo-em-movimento h2 {
-		font-size: clamp(2.5rem, 1rem + 7vw, 3.25rem);
+		font-size: clamp(2.25rem, 0.5rem + 8vw, 3.25rem);
 		line-height: 1;
+	}
+
+	.cena-horizontal .como-funciona-cabecalho h2 {
+		font-size: 2.25rem;
+	}
+
+	.cena-horizontal .como-funciona-cabecalho p {
+		margin-top: 8px;
+		font-size: var(--tamanho-pequeno);
+	}
+
+	.cena-horizontal .linha-de-etapas {
+		gap: 16px;
+		padding-top: 24px;
+	}
+
+	.cena-horizontal .etapa {
+		flex-basis: 74vw;
+	}
+
+	.cena-horizontal .etapa p {
+		min-height: 0;
+	}
+
+	.cena-horizontal .etapa .espaco-variavel {
+		height: 14px;
+	}
+
+	.cena-horizontal .etapa:nth-child(even) .espaco-variavel {
+		height: 30px;
 	}
 
 	.secao-por-que-agora,
@@ -1419,10 +1454,6 @@ a {
 }
 
 .animacoes-ativas [data-aparecer] > * {
-	opacity: 0;
-}
-
-.animacoes-ativas .titulo-em-movimento:not(.titulo-deslizando, .titulo-revelado) h2 {
 	opacity: 0;
 }
 

@@ -5,7 +5,8 @@ const bibliotecaDeAnimacao = window.Motion;
 const BibliotecaDeRolagemSuave = window.Lenis;
 const navegadorControladoPorAutomacao = navigator.webdriver;
 const animacoesEstaoLiberadas = Boolean(bibliotecaDeAnimacao) && !usuarioPrefereMenosMovimento;
-const consultaDeTelaCompacta = window.matchMedia('(max-width: 767px), (max-height: 560px)');
+const consultaDeTelaBaixa = window.matchMedia('(max-height: 560px)');
+const consultaDeTelaEstreita = window.matchMedia('(max-width: 767px)');
 
 const curvaDeDesaceleracao = [0.22, 1, 0.36, 1];
 const curvaComImpulso = [0.34, 1.4, 0.64, 1];
@@ -20,6 +21,8 @@ const mascaraAberta = 'inset(0% 0% 0% 0%)';
 const suavidadeDaRolagem = 0.12;
 const proporcaoMinimaDaBarraDeProgresso = 0.14;
 const pausaNoFimDaCenaHorizontal = 0.2;
+const deslocamentoDosTrechosDoTitulo = 0.7;
+const pontoDeEncaixeDoTitulo = 0.45;
 
 const saldoInicialDaEscola = 18430;
 const duracaoDaContagemAoPlanejar = 1400;
@@ -57,6 +60,7 @@ const lancamentosPlanejados = document.querySelectorAll('.lancamento-planejado')
 
 const tituloEmMovimento = document.getElementById('titulo-em-movimento');
 const tituloDoProblema = document.getElementById('titulo-problema');
+const trechosDoTitulo = document.querySelectorAll('.trecho-do-titulo');
 
 const secaoComoFunciona = document.getElementById('como-funciona');
 const palcoHorizontal = document.getElementById('palco-horizontal');
@@ -176,7 +180,7 @@ function ativarRolagemManualDasEtapas() {
 	};
 
 	linhaDeEtapas.addEventListener('scroll', acompanharRolagemManual, { passive: true });
-	consultaDeTelaCompacta.addEventListener('change', acompanharRolagemManual);
+	consultaDeTelaBaixa.addEventListener('change', acompanharRolagemManual);
 	acompanharRolagemManual();
 }
 
@@ -188,7 +192,7 @@ function ativarCenaHorizontal() {
 	let ultimoDeslocamentoDasEtapas = null;
 
 	const medirCena = () => {
-		if (consultaDeTelaCompacta.matches) {
+		if (consultaDeTelaBaixa.matches) {
 			return;
 		}
 
@@ -200,7 +204,7 @@ function ativarCenaHorizontal() {
 	};
 
 	const aplicarModoDaCena = () => {
-		const cenaFixaNaTela = !consultaDeTelaCompacta.matches;
+		const cenaFixaNaTela = !consultaDeTelaBaixa.matches;
 
 		secaoComoFunciona.classList.toggle('cena-horizontal', cenaFixaNaTela);
 
@@ -216,11 +220,11 @@ function ativarCenaHorizontal() {
 	};
 
 	registrarMedicao(medirCena);
-	consultaDeTelaCompacta.addEventListener('change', aplicarModoDaCena);
+	consultaDeTelaBaixa.addEventListener('change', aplicarModoDaCena);
 	aplicarModoDaCena();
 
 	bibliotecaDeAnimacao.scroll((progresso) => {
-		if (consultaDeTelaCompacta.matches || distanciaHorizontalDasEtapas === 0) {
+		if (consultaDeTelaBaixa.matches || distanciaHorizontalDasEtapas === 0) {
 			return;
 		}
 
@@ -246,50 +250,60 @@ function ativarTituloEmMovimento() {
 		return;
 	}
 
-	let ultimoDeslocamentoDoTitulo = null;
+	let ultimoProgressoAplicado = null;
 
 	const medirTitulo = () => {
 		distanciaDoTituloEmMovimento = Math.max(0, tituloDoProblema.scrollWidth - tituloEmMovimento.clientWidth);
 	};
 
+	const limparDeslocamentos = () => {
+		tituloDoProblema.style.transform = '';
+		trechosDoTitulo.forEach((trecho) => {
+			trecho.style.transform = '';
+		});
+		ultimoProgressoAplicado = null;
+	};
+
 	const aplicarModoDoTitulo = () => {
-		const tituloDesliza = !consultaDeTelaCompacta.matches;
-
-		tituloEmMovimento.classList.toggle('titulo-deslizando', tituloDesliza);
-
-		if (!tituloDesliza) {
-			tituloDoProblema.style.transform = '';
-			ultimoDeslocamentoDoTitulo = null;
-		}
-
+		tituloEmMovimento.classList.toggle('titulo-deslizando', !consultaDeTelaEstreita.matches);
+		tituloEmMovimento.classList.toggle('titulo-encaixando', consultaDeTelaEstreita.matches);
+		limparDeslocamentos();
 		medirTitulo();
 	};
 
+	const deslizarTituloInteiro = (progresso) => {
+		const deslocamento = Math.round(-distanciaDoTituloEmMovimento * progresso);
+		tituloDoProblema.style.transform = `translate3d(${deslocamento}px, 0, 0)`;
+	};
+
+	const encaixarTrechosDoTitulo = (progresso) => {
+		const progressoDoEncaixe = Math.min(1, progresso / pontoDeEncaixeDoTitulo);
+		const distanciaRestante = (1 - progressoDoEncaixe) * deslocamentoDosTrechosDoTitulo * tituloEmMovimento.clientWidth;
+
+		trechosDoTitulo.forEach((trecho, posicao) => {
+			const sentido = posicao % 2 === 0 ? -1 : 1;
+			trecho.style.transform = `translate3d(${Math.round(sentido * distanciaRestante)}px, 0, 0)`;
+		});
+	};
+
 	registrarMedicao(medirTitulo);
-	consultaDeTelaCompacta.addEventListener('change', aplicarModoDoTitulo);
+	consultaDeTelaEstreita.addEventListener('change', aplicarModoDoTitulo);
 	aplicarModoDoTitulo();
 
-	bibliotecaDeAnimacao.inView(tituloEmMovimento, () => {
-		tituloEmMovimento.classList.add('titulo-revelado');
-
-		if (consultaDeTelaCompacta.matches) {
-			revelarParte(tituloDoProblema, 0, false);
-		}
-	}, { amount: 0.4 });
-
 	bibliotecaDeAnimacao.scroll((progresso) => {
-		if (consultaDeTelaCompacta.matches) {
+		const progressoArredondado = Math.round(progresso * 1000) / 1000;
+
+		if (progressoArredondado === ultimoProgressoAplicado) {
 			return;
 		}
 
-		const deslocamento = Math.round(-distanciaDoTituloEmMovimento * progresso);
+		ultimoProgressoAplicado = progressoArredondado;
 
-		if (deslocamento === ultimoDeslocamentoDoTitulo) {
-			return;
+		if (consultaDeTelaEstreita.matches) {
+			encaixarTrechosDoTitulo(progressoArredondado);
+		} else {
+			deslizarTituloInteiro(progressoArredondado);
 		}
-
-		ultimoDeslocamentoDoTitulo = deslocamento;
-		tituloDoProblema.style.transform = `translate3d(${deslocamento}px, 0, 0)`;
 	}, {
 		target: tituloEmMovimento,
 		offset: ['start end', 'end start'],
@@ -428,7 +442,7 @@ function enfileirarRevelacao(parte, blocoDeDocumentos) {
 	}
 
 	revelacaoAgendada = true;
-	requestAnimationFrame(revelarFila);
+	queueMicrotask(revelarFila);
 }
 
 function revelarFila() {
