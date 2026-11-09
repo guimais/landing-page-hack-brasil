@@ -1,3 +1,19 @@
+@font-face {
+	font-family: "Bricolage Grotesque";
+	font-style: normal;
+	font-weight: 200 800;
+	font-display: swap;
+	src: url("../fontes/bricolage-grotesque-latin.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Geist";
+	font-style: normal;
+	font-weight: 100 900;
+	font-display: swap;
+	src: url("../fontes/geist-latin.woff2") format("woff2");
+}
+
 :root {
 	--cor-da-meia-noite: #0b0f1c;
 	--cor-azul-eletrico: #1f4fff;
@@ -11,9 +27,9 @@
 	--cor-da-pauta: rgba(31, 79, 255, 0.14);
 	--cor-da-margem-do-caderno: rgba(245, 138, 79, 0.55);
 
-	--textura-de-papel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='manchas'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.27 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23manchas)'/%3E%3Cfilter id='fibras'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.5' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.37 0 0 0 0 0.28 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fibras)'/%3E%3Cfilter id='grao'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.27 0 0 0 0 0.2 0 0 0 0.26 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grao)'/%3E%3C/svg%3E");
-	--textura-de-cartolina-escura: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='manchas'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005' numOctaves='4' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.58 0 0 0 0 0.85 0 0 0 0.085 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23manchas)'/%3E%3Cfilter id='fibras'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01 0.45' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.055 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fibras)'/%3E%3Cfilter id='grao'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grao)'/%3E%3C/svg%3E");
-	--textura-de-cartolina-colorida: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='manchas'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0.02 0 0 0 0 0.12 0 0 0 0.28 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23manchas)'/%3E%3Cfilter id='fibras'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01 0.45' numOctaves='2' seed='1' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fibras)'/%3E%3Cfilter id='grao'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' seed='6' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0.02 0 0 0 0 0.1 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grao)'/%3E%3C/svg%3E");
+	--textura-de-papel: url("../img/textura-papel.webp") 0 0 / 420px 420px;
+	--textura-de-cartolina-escura: url("../img/textura-meia-noite.webp") 0 0 / 420px 420px;
+	--textura-de-cartolina-colorida: url("../img/textura-azul.webp") 0 0 / 420px 420px;
 
 	--fonte-dos-titulos: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
 	--fonte-da-leitura: "Geist", "Helvetica Neue", Arial, sans-serif;
@@ -334,15 +350,6 @@ a {
 	z-index: -1;
 	background: var(--cor-cantalupo);
 	transform-origin: left;
-}
-
-.realce-pendente .realce-do-titulo::before {
-	transform: scaleX(0);
-}
-
-.realce-ativo .realce-do-titulo::before {
-	transform: scaleX(1);
-	transition: transform 0.9s var(--curva-de-desaceleracao);
 }
 
 .texto-de-apoio {
@@ -876,9 +883,9 @@ a {
 .secao-entregas {
 	padding: 140px var(--margem-lateral) 150px;
 	background:
-		var(--textura-de-papel),
 		linear-gradient(90deg, transparent calc(var(--margem-lateral) + 40px), var(--cor-da-margem-do-caderno) calc(var(--margem-lateral) + 40px), var(--cor-da-margem-do-caderno) calc(var(--margem-lateral) + 42px), transparent calc(var(--margem-lateral) + 42px)),
 		repeating-linear-gradient(180deg, transparent 0, transparent 35px, var(--cor-da-pauta) 35px, var(--cor-da-pauta) 36px),
+		var(--textura-de-papel),
 		var(--cor-do-papel);
 	color: var(--cor-da-meia-noite);
 }
@@ -1301,23 +1308,98 @@ a {
 	}
 }
 
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
+	.cabecalho > *,
 	.cartao-extrato,
-	[data-aparecer] > * {
-		opacity: 0;
-		animation: mostrar-sem-animacao 0s 3s forwards;
+	.cartao-extrato .texto-de-apoio,
+	.cartao-extrato .modulos,
+	.cartao-extrato .losango,
+	.cartao-extrato .extrato {
+		animation: surgir-de-baixo 0.9s var(--curva-de-desaceleracao) both;
 	}
+
+	.cabecalho > * {
+		animation-name: surgir-de-cima;
+	}
+
+	.cabecalho > :nth-child(1) {
+		animation-delay: 0.1s;
+	}
+
+	.cabecalho > :nth-child(2) {
+		animation-delay: 0.16s;
+	}
+
+	.cabecalho > :nth-child(3) {
+		animation-delay: 0.22s;
+	}
+
+	.cartao-extrato {
+		--distancia-da-entrada: 40px;
+	}
+
+	.cartao-extrato .texto-de-apoio {
+		animation-delay: 0.6s;
+	}
+
+	.cartao-extrato .modulos {
+		animation-delay: 0.68s;
+	}
+
+	.cartao-extrato .losango {
+		animation-delay: 0.76s;
+	}
+
+	.cartao-extrato .extrato {
+		animation-delay: 0.84s;
+	}
+
+	.texto-da-linha {
+		animation: subir-a-linha 1.1s var(--curva-de-desaceleracao) 0.3s both;
+	}
+
+	.segunda-linha-do-titulo .texto-da-linha {
+		animation-delay: 0.42s;
+	}
+
+	.realce-do-titulo::before {
+		animation: esticar-o-realce 0.9s var(--curva-de-desaceleracao) 1.3s both;
+	}
+}
+
+@keyframes surgir-de-baixo {
+	from {
+		opacity: 0;
+		translate: 0 var(--distancia-da-entrada, 28px);
+	}
+}
+
+@keyframes surgir-de-cima {
+	from {
+		opacity: 0;
+		translate: 0 -12px;
+	}
+}
+
+@keyframes subir-a-linha {
+	from {
+		transform: translateY(110%);
+	}
+}
+
+@keyframes esticar-o-realce {
+	from {
+		transform: scaleX(0);
+	}
+}
+
+.animacoes-ativas [data-aparecer] > * {
+	opacity: 0;
 }
 
 .animacoes-ativas [data-aparecer]:not(.bloco-revelado) .marca-texto {
 	background-color: transparent;
 	color: inherit;
-}
-
-@keyframes mostrar-sem-animacao {
-	to {
-		opacity: 1;
-	}
 }
 
 @media (prefers-reduced-motion: reduce) {

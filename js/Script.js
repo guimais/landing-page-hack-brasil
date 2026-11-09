@@ -16,7 +16,7 @@ const distanciaDaEntradaDosDocumentos = 80;
 const mascaraFechada = 'inset(0% 0% 100% 0%)';
 const mascaraAberta = 'inset(0% 0% 0% 0%)';
 
-const duracaoDaRolagemSuave = 1.15;
+const suavidadeDaRolagem = 0.12;
 const proporcaoMinimaDaBarraDeProgresso = 0.14;
 const pausaNoFimDaCenaHorizontal = 0.2;
 
@@ -53,8 +53,6 @@ const valorDoSaldo = document.getElementById('valor-do-saldo');
 const rotuloDoSaldo = document.getElementById('rotulo-do-saldo');
 const mensagemDeStatus = document.getElementById('mensagem-de-status');
 const lancamentosPlanejados = document.querySelectorAll('.lancamento-planejado');
-const tituloPrincipal = document.getElementById('titulo-principal');
-const textosDasLinhasDoTitulo = document.querySelectorAll('.texto-da-linha');
 
 const tituloEmMovimento = document.getElementById('titulo-em-movimento');
 const tituloDoProblema = document.getElementById('titulo-problema');
@@ -89,7 +87,6 @@ function iniciarPagina() {
 		raizDaPagina.classList.add('animacoes-ativas');
 		ativarCenaHorizontal();
 		ativarTituloEmMovimento();
-		ativarAnimacoesDeEntrada();
 		ativarRevelacoesAoRolar();
 	} else {
 		ativarRolagemManualDasEtapas();
@@ -128,17 +125,10 @@ function ativarRolagemSuave() {
 	}
 
 	rolagemSuave = new BibliotecaDeRolagemSuave({
-		duration: duracaoDaRolagemSuave,
-		easing: (progresso) => 1 - Math.pow(1 - progresso, 4),
+		autoRaf: true,
+		lerp: suavidadeDaRolagem,
 		smoothWheel: true,
 	});
-
-	const atualizarRolagemAQuadro = (momento) => {
-		rolagemSuave.raf(momento);
-		requestAnimationFrame(atualizarRolagemAQuadro);
-	};
-
-	requestAnimationFrame(atualizarRolagemAQuadro);
 }
 
 function ativarLinksInternos() {
@@ -202,10 +192,17 @@ function ativarCenaHorizontal() {
 		secaoComoFunciona.style.setProperty('--altura-da-cena', `${alturaDaCena}px`);
 	});
 
+	let ultimoDeslocamentoDasEtapas = null;
+
 	bibliotecaDeAnimacao.scroll((progresso) => {
 		const progressoDoMovimento = Math.min(1, progresso * (1 + pausaNoFimDaCenaHorizontal));
-		const deslocamento = -distanciaHorizontalDasEtapas * progressoDoMovimento;
+		const deslocamento = Math.round(-distanciaHorizontalDasEtapas * progressoDoMovimento);
 
+		if (deslocamento === ultimoDeslocamentoDasEtapas) {
+			return;
+		}
+
+		ultimoDeslocamentoDasEtapas = deslocamento;
 		linhaDeEtapas.style.transform = `translate3d(${deslocamento}px, 0, 0)`;
 		atualizarBarraDeProgresso(progressoDoMovimento);
 	}, {
@@ -225,8 +222,16 @@ function ativarTituloEmMovimento() {
 		distanciaDoTituloEmMovimento = Math.max(0, tituloDoProblema.scrollWidth - tituloEmMovimento.clientWidth);
 	});
 
+	let ultimoDeslocamentoDoTitulo = null;
+
 	bibliotecaDeAnimacao.scroll((progresso) => {
-		const deslocamento = -distanciaDoTituloEmMovimento * progresso;
+		const deslocamento = Math.round(-distanciaDoTituloEmMovimento * progresso);
+
+		if (deslocamento === ultimoDeslocamentoDoTitulo) {
+			return;
+		}
+
+		ultimoDeslocamentoDoTitulo = deslocamento;
 		tituloDoProblema.style.transform = `translate3d(${deslocamento}px, 0, 0)`;
 	}, {
 		target: tituloEmMovimento,
@@ -327,37 +332,6 @@ function animarNumero({ valorInicial, valorFinal, duracao, atraso = 0, aoAtualiz
 		foiCancelada = true;
 		clearTimeout(garantiaDoValorFinal);
 	};
-}
-
-function ativarAnimacoesDeEntrada() {
-	const { animate: animar, stagger: escalonar } = bibliotecaDeAnimacao;
-
-	tituloPrincipal.classList.add('realce-pendente');
-
-	animar('.cabecalho > *', { opacity: [0, 1], y: [-12, 0] }, {
-		delay: escalonar(0.06, { startDelay: 0.1 }),
-		duration: duracaoDasEntradas,
-		ease: curvaDeDesaceleracao,
-	});
-
-	animar(cartaoDoExtrato, { opacity: [0, 1], y: [40, 0] }, {
-		duration: duracaoDasEntradas,
-		ease: curvaDeDesaceleracao,
-	});
-
-	animar(textosDasLinhasDoTitulo, { y: ['110%', '0%'] }, {
-		delay: escalonar(0.12, { startDelay: 0.3 }),
-		duration: duracaoDaRevelacaoDosTitulos,
-		ease: curvaDeDesaceleracao,
-	}).then(() => {
-		tituloPrincipal.classList.replace('realce-pendente', 'realce-ativo');
-	});
-
-	animar('.texto-de-apoio, .modulos, .losango, .extrato', { opacity: [0, 1], y: [distanciaDasEntradas, 0] }, {
-		delay: escalonar(intervaloEntreEntradas, { startDelay: 0.6 }),
-		duration: duracaoDasEntradas,
-		ease: curvaDeDesaceleracao,
-	});
 }
 
 function ativarRevelacoesAoRolar() {
