@@ -13,22 +13,25 @@ const duracaoDaRevelacaoDosTitulos = 1.1;
 const intervaloEntreEntradas = 0.08;
 const distanciaDasEntradas = 28;
 const distanciaDaEntradaDosDocumentos = 80;
-const duracaoDaContagemDosNumeros = 1.6;
 const mascaraFechada = 'inset(0% 0% 100% 0%)';
 const mascaraAberta = 'inset(0% 0% 0% 0%)';
-const saldoInicialDaEscola = 18430;
+
+const duracaoDaRolagemSuave = 1.15;
 const proporcaoMinimaDaBarraDeProgresso = 0.14;
 const pausaNoFimDaCenaHorizontal = 0.2;
+
+const saldoInicialDaEscola = 18430;
 const duracaoDaContagemAoPlanejar = 1400;
 const atrasoDaContagemAoPlanejar = 250;
 const duracaoDaContagemAoDesfazer = 900;
+const duracaoDaContagemDosNumeros = 1600;
 const folgaParaGarantirValorFinal = 120;
 
 const textosDoSaldo = {
 	parado: {
 		rotulo: 'Saldo parado',
 		mensagem: 'Se nada for feito, o saldo do PDDE Básico volta para o governo no prazo de fevereiro.',
-		botao: 'Planejar este saldo <span class="seta" aria-hidden="true">→</span>',
+		botao: 'Planejar este saldo',
 	},
 	planejado: {
 		rotulo: 'Saldo após o plano',
@@ -42,8 +45,10 @@ const formatadorDeReais = new Intl.NumberFormat('pt-BR', {
 	currency: 'BRL',
 });
 
+const raizDaPagina = document.documentElement;
 const cartaoDoExtrato = document.getElementById('cartao-extrato');
 const botaoPlanejarSaldo = document.getElementById('botao-planejar-saldo');
+const textoDoBotaoPlanejar = document.getElementById('texto-do-botao-planejar');
 const valorDoSaldo = document.getElementById('valor-do-saldo');
 const rotuloDoSaldo = document.getElementById('rotulo-do-saldo');
 const mensagemDeStatus = document.getElementById('mensagem-de-status');
@@ -64,9 +69,12 @@ const linksParaSecoesDaPagina = document.querySelectorAll('a[href^="#"]');
 const blocosQueAparecemAoRolar = document.querySelectorAll('[data-aparecer]');
 const numerosQueContam = document.querySelectorAll('[data-contar]');
 
+const medicoesAoRedimensionar = [];
+
 let rolagemSuave = null;
 let saldoEstaPlanejado = false;
-let numeroDaContagemAtual = 0;
+let cancelarContagemDoSaldo = null;
+let medicaoAgendada = false;
 let distanciaHorizontalDasEtapas = 0;
 let distanciaDoTituloEmMovimento = 0;
 
@@ -74,37 +82,66 @@ iniciarPagina();
 
 function iniciarPagina() {
 	ativarRolagemSuave();
+	ativarLinksInternos();
 	ativarBotaoDePlanejarSaldo();
 
 	if (animacoesEstaoLiberadas) {
+		raizDaPagina.classList.add('animacoes-ativas');
 		ativarCenaHorizontal();
 		ativarTituloEmMovimento();
-		ativarAnimacoes();
+		ativarAnimacoesDeEntrada();
+		ativarRevelacoesAoRolar();
 	} else {
 		ativarRolagemManualDasEtapas();
 	}
+
+	window.addEventListener('resize', agendarMedicoes, { passive: true });
+	document.fonts?.ready.then(executarMedicoes);
+}
+
+function registrarMedicao(medir) {
+	medicoesAoRedimensionar.push(medir);
+	medir();
+}
+
+function executarMedicoes() {
+	medicaoAgendada = false;
+	medicoesAoRedimensionar.forEach((medir) => medir());
+}
+
+function agendarMedicoes() {
+	if (medicaoAgendada) {
+		return;
+	}
+
+	medicaoAgendada = true;
+	requestAnimationFrame(executarMedicoes);
 }
 
 function ativarRolagemSuave() {
-	const podeSuavizarRolagem = !usuarioPrefereMenosMovimento
-		&& BibliotecaDeRolagemSuave
+	const podeSuavizarRolagem = BibliotecaDeRolagemSuave
+		&& !usuarioPrefereMenosMovimento
 		&& !navegadorControladoPorAutomacao;
 
-	if (podeSuavizarRolagem) {
-		rolagemSuave = new BibliotecaDeRolagemSuave({
-			duration: 1.15,
-			easing: (progresso) => 1 - Math.pow(1 - progresso, 4),
-			smoothWheel: true,
-		});
-
-		const atualizarRolagemAQuadro = (momento) => {
-			rolagemSuave.raf(momento);
-			requestAnimationFrame(atualizarRolagemAQuadro);
-		};
-
-		requestAnimationFrame(atualizarRolagemAQuadro);
+	if (!podeSuavizarRolagem) {
+		return;
 	}
 
+	rolagemSuave = new BibliotecaDeRolagemSuave({
+		duration: duracaoDaRolagemSuave,
+		easing: (progresso) => 1 - Math.pow(1 - progresso, 4),
+		smoothWheel: true,
+	});
+
+	const atualizarRolagemAQuadro = (momento) => {
+		rolagemSuave.raf(momento);
+		requestAnimationFrame(atualizarRolagemAQuadro);
+	};
+
+	requestAnimationFrame(atualizarRolagemAQuadro);
+}
+
+function ativarLinksInternos() {
 	linksParaSecoesDaPagina.forEach((link) => {
 		link.addEventListener('click', (evento) => {
 			const enderecoDaSecao = link.getAttribute('href');
@@ -145,30 +182,25 @@ function ativarRolagemManualDasEtapas() {
 }
 
 function ativarCenaHorizontal() {
-	if (!secaoComoFunciona || !palcoHorizontal || !linhaDeEtapas) {
+	if (!secaoComoFunciona || !palcoHorizontal || !linhaDeEtapas || !barraDeProgresso || etapas.length === 0) {
 		return;
 	}
 
 	secaoComoFunciona.classList.add('cena-horizontal');
 	linhaDeEtapas.removeAttribute('tabindex');
 
-	const medirCenaHorizontal = () => {
+	registrarMedicao(() => {
 		const ultimaEtapa = etapas[etapas.length - 1];
 		const inicioDaLinha = linhaDeEtapas.getBoundingClientRect().left;
 		const fimDaUltimaEtapa = ultimaEtapa.getBoundingClientRect().right;
 		const larguraTotalDasEtapas = fimDaUltimaEtapa - inicioDaLinha;
-		const larguraVisivel = linhaDeEtapas.clientWidth;
 		const alturaDaTela = window.innerHeight;
 
-		distanciaHorizontalDasEtapas = Math.max(0, larguraTotalDasEtapas - larguraVisivel);
+		distanciaHorizontalDasEtapas = Math.max(0, larguraTotalDasEtapas - linhaDeEtapas.clientWidth);
 
 		const alturaDaCena = alturaDaTela + distanciaHorizontalDasEtapas + alturaDaTela * pausaNoFimDaCenaHorizontal;
 		secaoComoFunciona.style.setProperty('--altura-da-cena', `${alturaDaCena}px`);
-	};
-
-	medirCenaHorizontal();
-	window.addEventListener('resize', medirCenaHorizontal);
-	document.fonts?.ready.then(medirCenaHorizontal);
+	});
 
 	bibliotecaDeAnimacao.scroll((progresso) => {
 		const progressoDoMovimento = Math.min(1, progresso * (1 + pausaNoFimDaCenaHorizontal));
@@ -189,16 +221,9 @@ function ativarTituloEmMovimento() {
 
 	tituloEmMovimento.classList.add('titulo-deslizando');
 
-	const medirTitulo = () => {
-		const larguraDoTitulo = tituloDoProblema.scrollWidth;
-		const larguraVisivel = tituloEmMovimento.clientWidth;
-
-		distanciaDoTituloEmMovimento = Math.max(0, larguraDoTitulo - larguraVisivel);
-	};
-
-	medirTitulo();
-	window.addEventListener('resize', medirTitulo);
-	document.fonts?.ready.then(medirTitulo);
+	registrarMedicao(() => {
+		distanciaDoTituloEmMovimento = Math.max(0, tituloDoProblema.scrollWidth - tituloEmMovimento.clientWidth);
+	});
 
 	bibliotecaDeAnimacao.scroll((progresso) => {
 		const deslocamento = -distanciaDoTituloEmMovimento * progresso;
@@ -210,7 +235,7 @@ function ativarTituloEmMovimento() {
 }
 
 function ativarBotaoDePlanejarSaldo() {
-	if (!cartaoDoExtrato || !botaoPlanejarSaldo || !valorDoSaldo) {
+	if (!cartaoDoExtrato || !botaoPlanejarSaldo || !textoDoBotaoPlanejar || !valorDoSaldo) {
 		return;
 	}
 
@@ -223,7 +248,7 @@ function ativarBotaoDePlanejarSaldo() {
 		botaoPlanejarSaldo.classList.toggle('botao-destaque', !saldoEstaPlanejado);
 		botaoPlanejarSaldo.classList.toggle('botao-suave', saldoEstaPlanejado);
 		botaoPlanejarSaldo.setAttribute('aria-pressed', String(saldoEstaPlanejado));
-		botaoPlanejarSaldo.innerHTML = textosDoMomento.botao;
+		textoDoBotaoPlanejar.textContent = textosDoMomento.botao;
 		rotuloDoSaldo.textContent = textosDoMomento.rotulo;
 		mensagemDeStatus.textContent = textosDoMomento.mensagem;
 
@@ -248,52 +273,64 @@ function mostrarLancamentosPlanejados() {
 	});
 }
 
-function exibirValorDoSaldo(valor) {
-	valorDoSaldo.textContent = formatadorDeReais.format(valor);
+function contarValorDoSaldo(valorInicial, valorFinal, duracao, atraso) {
+	cancelarContagemDoSaldo?.();
+
+	cancelarContagemDoSaldo = animarNumero({
+		valorInicial,
+		valorFinal,
+		duracao,
+		atraso,
+		aoAtualizar: (valor) => {
+			valorDoSaldo.textContent = formatadorDeReais.format(valor);
+		},
+	});
 }
 
-function contarValorDoSaldo(valorInicial, valorFinal, duracao, atraso) {
+function animarNumero({ valorInicial, valorFinal, duracao, atraso = 0, aoAtualizar }) {
 	if (usuarioPrefereMenosMovimento) {
-		exibirValorDoSaldo(valorFinal);
-		return;
+		aoAtualizar(valorFinal);
+		return () => {};
 	}
 
-	const numeroDestaContagem = ++numeroDaContagemAtual;
+	let foiCancelada = false;
 	let momentoDeInicio = null;
 
-	const avancarContagem = (momentoAtual) => {
-		if (numeroDestaContagem !== numeroDaContagemAtual) {
+	const avancarQuadro = (momentoAtual) => {
+		if (foiCancelada) {
 			return;
 		}
 
-		if (momentoDeInicio === null) {
-			momentoDeInicio = momentoAtual + atraso;
-		}
+		momentoDeInicio ??= momentoAtual + atraso;
 
 		const progresso = Math.min(1, Math.max(0, (momentoAtual - momentoDeInicio) / duracao));
 		const progressoDesacelerado = 1 - Math.pow(2, -10 * progresso);
-		const valorDoMomento = valorInicial + (valorFinal - valorInicial) * progressoDesacelerado;
 
-		exibirValorDoSaldo(progresso >= 1 ? valorFinal : valorDoMomento);
-
-		if (progresso < 1) {
-			requestAnimationFrame(avancarContagem);
+		if (progresso >= 1) {
+			aoAtualizar(valorFinal);
+			return;
 		}
+
+		aoAtualizar(valorInicial + (valorFinal - valorInicial) * progressoDesacelerado);
+		requestAnimationFrame(avancarQuadro);
 	};
 
-	requestAnimationFrame(avancarContagem);
-
-	setTimeout(() => {
-		if (numeroDestaContagem === numeroDaContagemAtual) {
-			exibirValorDoSaldo(valorFinal);
+	const garantiaDoValorFinal = setTimeout(() => {
+		if (!foiCancelada) {
+			aoAtualizar(valorFinal);
 		}
 	}, atraso + duracao + folgaParaGarantirValorFinal);
+
+	requestAnimationFrame(avancarQuadro);
+
+	return () => {
+		foiCancelada = true;
+		clearTimeout(garantiaDoValorFinal);
+	};
 }
 
-function ativarAnimacoes() {
-	const { animate: animar, inView: quandoAparecer, stagger: escalonar } = bibliotecaDeAnimacao;
-
-	window.motionReady = true;
+function ativarAnimacoesDeEntrada() {
+	const { animate: animar, stagger: escalonar } = bibliotecaDeAnimacao;
 
 	tituloPrincipal.classList.add('realce-pendente');
 
@@ -313,15 +350,18 @@ function ativarAnimacoes() {
 		duration: duracaoDaRevelacaoDosTitulos,
 		ease: curvaDeDesaceleracao,
 	}).then(() => {
-		tituloPrincipal.classList.remove('realce-pendente');
-		tituloPrincipal.classList.add('realce-ativo');
+		tituloPrincipal.classList.replace('realce-pendente', 'realce-ativo');
 	});
 
-	animar('.texto-de-apoio, .losango, .extrato', { opacity: [0, 1], y: [distanciaDasEntradas, 0] }, {
+	animar('.texto-de-apoio, .modulos, .losango, .extrato', { opacity: [0, 1], y: [distanciaDasEntradas, 0] }, {
 		delay: escalonar(intervaloEntreEntradas, { startDelay: 0.6 }),
 		duration: duracaoDasEntradas,
 		ease: curvaDeDesaceleracao,
 	});
+}
+
+function ativarRevelacoesAoRolar() {
+	const { inView: quandoAparecer } = bibliotecaDeAnimacao;
 
 	blocosQueAparecemAoRolar.forEach((bloco) => {
 		quandoAparecer(bloco, () => revelarBloco(bloco), { amount: 0.15 });
@@ -334,10 +374,11 @@ function ativarAnimacoes() {
 
 function revelarBloco(bloco) {
 	const { animate: animar } = bibliotecaDeAnimacao;
-	const partesDoBloco = Array.from(bloco.children);
 	const blocoDeDocumentos = bloco.classList.contains('documentos');
 
-	partesDoBloco.forEach((parte, posicao) => {
+	bloco.classList.add('bloco-revelado');
+
+	Array.from(bloco.children).forEach((parte, posicao) => {
 		const atraso = posicao * intervaloEntreEntradas;
 
 		if (parte.tagName === 'H2') {
@@ -361,24 +402,19 @@ function revelarBloco(bloco) {
 }
 
 function contarNumero(numero) {
-	const valorFinal = Number(numero.dataset.valor);
-	const casasDecimais = Number(numero.dataset.casasDecimais);
-	const prefixo = numero.dataset.prefixo ?? '';
-	const sufixo = numero.dataset.sufixo ?? '';
+	const { valor, casasDecimais, prefixo = '', sufixo = '' } = numero.dataset;
 
 	const formatadorDoNumero = new Intl.NumberFormat('pt-BR', {
-		minimumFractionDigits: casasDecimais,
-		maximumFractionDigits: casasDecimais,
+		minimumFractionDigits: Number(casasDecimais),
+		maximumFractionDigits: Number(casasDecimais),
 	});
 
-	const escreverNumero = (valor) => {
-		numero.textContent = `${prefixo}${formatadorDoNumero.format(valor)}${sufixo}`;
-	};
-
-	bibliotecaDeAnimacao.animate(0, valorFinal, {
-		duration: duracaoDaContagemDosNumeros,
-		ease: curvaDeDesaceleracao,
-		onUpdate: escreverNumero,
-		onComplete: () => escreverNumero(valorFinal),
+	animarNumero({
+		valorInicial: 0,
+		valorFinal: Number(valor),
+		duracao: duracaoDaContagemDosNumeros,
+		aoAtualizar: (valorDoMomento) => {
+			numero.textContent = `${prefixo}${formatadorDoNumero.format(valorDoMomento)}${sufixo}`;
+		},
 	});
 }

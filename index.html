@@ -6,7 +6,7 @@
 
 		<title>Nenhuma escola perde o que já é dela | PDDE e PNLD</title>
 		<meta name="description" content="Plataforma para secretarias de educação que encontra o dinheiro do PDDE parado e os livros do PNLD fora do lugar, e entrega plano de compra, documentos e rotas.">
-		<meta name="keywords" content="PDDE, PNLD, FNDE, escola pública, secretaria de educação, livro didático, remanejamento de livros, prestação de contas, Hack Brasil">
+		<meta name="keywords" content="PDDE, PNLD, FNDE, escola pública, secretaria de educação, livro didático, remanejamento de livros, prestação de contas, estorno do PDDE, Hack Brasil">
 		<meta name="author" content="Guilherme Carvalho Mais, Gabriel Duarte Frias, João Gabriel Breganon Ferreira">
 		<meta name="robots" content="index, follow, max-image-preview:large">
 		<link rel="canonical" href="https://seudominio.com.br/">
@@ -20,7 +20,7 @@
 		<meta property="og:locale" content="pt_BR">
 		<meta property="og:site_name" content="Nenhuma escola perde o que já é dela">
 		<meta property="og:title" content="Nenhuma escola perde o que já é dela">
-		<meta property="og:description" content="Encontramos o dinheiro do PDDE parado e os livros do PNLD fora do lugar, e entregamos a solução pronta para a secretaria de educação.">
+		<meta property="og:description" content="Plataforma para secretarias de educação: encontra o dinheiro do PDDE parado e os livros do PNLD fora do lugar, e entrega a solução pronta.">
 		<meta property="og:url" content="https://seudominio.com.br/">
 		<meta property="og:image" content="https://seudominio.com.br/img/og-image.png">
 		<meta property="og:image:width" content="1200">
@@ -51,7 +51,7 @@
 						"operatingSystem": "Web",
 						"inLanguage": "pt-BR",
 						"url": "https://seudominio.com.br/",
-						"description": "Plataforma para secretarias de educação que monitora o PDDE e o PNLD, sugere o plano de compra, gera documentos e planeja o remanejamento de livros didáticos.",
+						"description": "Plataforma para secretarias de educação com dois módulos: Dinheiro, que monitora o PDDE, sugere o plano de compra e gera os documentos, e Livros, que planeja o remanejamento de livros didáticos do PNLD.",
 						"audience": {
 							"@type": "Audience",
 							"audienceType": "Secretarias municipais e estaduais de educação"
@@ -79,29 +79,30 @@
 	<body>
 		<a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
+		<header class="cabecalho">
+			<a class="marca" href="#conteudo" aria-label="Início">
+				<svg viewBox="0 0 28 28" aria-hidden="true">
+					<rect width="28" height="28" fill="#ffa06b"/>
+					<path d="M7 9h14M7 14h10M7 19h6" stroke="#0b0f1c" stroke-width="2.6"/>
+					<circle cx="20.5" cy="19" r="2.6" fill="#0b0f1c"/>
+				</svg>
+				pdde + pnld
+			</a>
+
+			<nav class="navegacao" aria-label="Seções da página">
+				<a href="#problema">O problema</a>
+				<a href="#por-que-agora">Por que agora</a>
+				<a href="#como-funciona">Como funciona</a>
+				<a href="#para-quem">Para quem</a>
+				<a href="#perguntas">Perguntas</a>
+			</nav>
+
+			<a class="botao botao-destaque" href="#hack-brasil">Projeto Hack Brasil</a>
+		</header>
+
 		<main id="conteudo">
-			<header class="cabecalho">
-				<a class="marca" href="#conteudo" aria-label="Início">
-					<svg viewBox="0 0 28 28" aria-hidden="true">
-						<rect width="28" height="28" fill="#ffa06b"/>
-						<path d="M7 9h14M7 14h10M7 19h6" stroke="#0b0f1c" stroke-width="2.6"/>
-						<circle cx="20.5" cy="19" r="2.6" fill="#0b0f1c"/>
-					</svg>
-					pdde + pnld
-				</a>
-
-				<nav class="navegacao" aria-label="Seções da página">
-					<a href="#problema">O problema</a>
-					<a href="#como-funciona">Como funciona</a>
-					<a href="#entregas">Entregas</a>
-					<a href="#perguntas">Perguntas</a>
-				</nav>
-
-				<a class="botao botao-destaque" href="#hack-brasil">Projeto Hack Brasil</a>
-			</header>
-
 			<section class="abertura" aria-labelledby="titulo-principal">
-				<div class="cartao-extrato" id="cartao-extrato">
+				<div class="cartao-de-papel cartao-extrato" id="cartao-extrato">
 					<span class="canto canto-superior-esquerdo" aria-hidden="true"></span>
 					<span class="canto canto-superior-direito" aria-hidden="true"></span>
 					<span class="canto canto-inferior-esquerdo" aria-hidden="true"></span>
@@ -111,7 +112,13 @@
 						<span class="linha-do-titulo primeira-linha-do-titulo"><span class="texto-da-linha">Nenhuma escola perde</span></span>
 						<span class="linha-do-titulo segunda-linha-do-titulo"><span class="texto-da-linha realce-do-titulo">o que já é dela.</span></span>
 					</h1>
-					<p class="texto-de-apoio">Achamos o dinheiro do PDDE parado e os livros do PNLD fora do lugar. E entregamos a solução pronta.</p>
+					<p class="texto-de-apoio">Uma plataforma para secretarias de educação que acha o dinheiro do PDDE parado e os livros do PNLD fora do lugar, e entrega a solução pronta.</p>
+
+					<ul class="modulos" aria-label="Módulos da plataforma">
+						<li><strong>Dinheiro</strong> PDDE</li>
+						<li><strong>Livros</strong> PNLD</li>
+					</ul>
+
 					<div class="losango" aria-hidden="true"></div>
 
 					<div class="extrato">
@@ -160,13 +167,14 @@
 
 						<div class="saldo-total">
 							<span id="rotulo-do-saldo">Saldo parado</span>
-							<strong id="valor-do-saldo" aria-live="polite">R$ 18.430,00</strong>
+							<strong id="valor-do-saldo">R$ 18.430,00</strong>
 						</div>
-						<p class="mensagem-de-status" id="mensagem-de-status">Se nada for feito, o saldo do PDDE Básico volta para o governo no prazo de fevereiro.</p>
+						<p class="mensagem-de-status" id="mensagem-de-status" role="status">Se nada for feito, o saldo do PDDE Básico volta para o governo no prazo de fevereiro.</p>
 
 						<div class="acoes-do-extrato">
 							<button class="botao botao-destaque" id="botao-planejar-saldo" type="button" aria-controls="lancamentos" aria-pressed="false">
-								Planejar este saldo <span class="seta" aria-hidden="true">→</span>
+								<span id="texto-do-botao-planejar">Planejar este saldo</span>
+								<span class="seta" aria-hidden="true">→</span>
 							</button>
 							<small>Escola e valores ilustrativos.</small>
 						</div>
@@ -186,7 +194,7 @@
 
 					<dl class="numeros-do-problema" data-aparecer>
 						<div class="numero">
-							<dt data-contar data-valor="122.7" data-casas-decimais="1" data-prefixo="" data-sufixo=" mil">122,7 mil</dt>
+							<dt data-contar data-valor="122.7" data-casas-decimais="1" data-sufixo=" mil">122,7 mil</dt>
 							<dd>escolas recebem o PDDE direto na conta</dd>
 						</div>
 						<div class="numero">
@@ -194,14 +202,32 @@
 							<dd>previstos para o PDDE Básico em 2025</dd>
 						</div>
 						<div class="numero">
-							<dt data-contar data-valor="194.6" data-casas-decimais="1" data-prefixo="" data-sufixo=" mi">194,6 mi</dt>
+							<dt data-contar data-valor="194.6" data-casas-decimais="1" data-sufixo=" mi">194,6 mi</dt>
 							<dd>livros didáticos distribuídos em 2024</dd>
 						</div>
 						<div class="numero">
-							<dt data-contar data-valor="3" data-casas-decimais="0" data-prefixo="" data-sufixo="%">3%</dt>
+							<dt data-contar data-valor="3" data-casas-decimais="0" data-sufixo="%">3%</dt>
 							<dd>é o teto da reserva técnica para cobrir falta de livro</dd>
 						</div>
 					</dl>
+				</div>
+			</section>
+
+			<section class="secao-por-que-agora" id="por-que-agora" aria-labelledby="titulo-por-que-agora">
+				<div class="cartao-de-papel cartao-aviso">
+					<span class="canto canto-superior-esquerdo" aria-hidden="true"></span>
+					<span class="canto canto-superior-direito" aria-hidden="true"></span>
+					<span class="canto canto-inferior-esquerdo" aria-hidden="true"></span>
+					<span class="canto canto-inferior-direito" aria-hidden="true"></span>
+
+					<div class="aviso-conteudo" data-aparecer>
+						<p class="carimbo">Por que agora</p>
+						<h2 id="titulo-por-que-agora">A partir de 2027, o saldo que passar de fevereiro <span class="marca-texto">volta para o governo.</span></h2>
+						<div class="aviso-detalhes">
+							<p>A Resolução CD/FNDE 18/2025 muda a regra do PDDE. O dinheiro precisa ser usado até o décimo dia útil de fevereiro do ano seguinte. O que sobrar é estornado, e o novo repasse só cai em conta zerada.</p>
+							<p>Até aqui, o saldo ia para o ano seguinte e ninguém perdia. Agora perde. Só as ações integradas ficam fora do estorno.</p>
+						</div>
+					</div>
 				</div>
 			</section>
 
@@ -214,7 +240,7 @@
 
 					<div class="trilho-de-progresso" aria-hidden="true"><i id="barra-de-progresso"></i></div>
 
-					<div class="linha-de-etapas" id="linha-de-etapas" tabindex="0" aria-label="Etapas do processo, role para o lado">
+					<div class="linha-de-etapas" id="linha-de-etapas" role="region" tabindex="0" aria-label="Etapas do processo, role para o lado">
 						<article class="etapa">
 							<h3>Todo dia, uma conferência</h3>
 							<p>Lemos os sistemas públicos do FNDE e trazemos, de cada escola, saldo, repasses, pendências e livros recebidos.</p>
@@ -291,11 +317,11 @@
 							<div class="miniatura">
 								<span class="miniatura-titulo">Rota da van · 3 paradas</span>
 								<svg class="mapa-da-rota" viewBox="0 0 240 190" role="img" aria-label="Mapa com a rota da van entre três escolas">
-									<path class="rua" d="M0 40h240M0 120h240M60 0v190M170 0v190M0 175l240-70" stroke="#232a40" stroke-width="9" fill="none"/>
-									<path d="M40 40 L60 40 L60 120 L170 120 L170 70" stroke="#ffa06b" stroke-width="4" fill="none" stroke-linejoin="round"/>
-									<circle cx="40" cy="40" r="8" fill="#ece8df"/>
-									<circle cx="60" cy="120" r="8" fill="#ffa06b"/>
-									<circle cx="170" cy="70" r="8" fill="#ffa06b"/>
+									<path class="rua" d="M0 40h240M0 120h240M60 0v190M170 0v190M0 175l240-70"/>
+									<path class="rota" d="M40 40 L60 40 L60 120 L170 120 L170 70"/>
+									<circle class="parada-de-saida" cx="40" cy="40" r="8"/>
+									<circle class="parada-de-entrega" cx="60" cy="120" r="8"/>
+									<circle class="parada-de-entrega" cx="170" cy="70" r="8"/>
 									<text x="34" y="24">Aurora</text>
 									<text x="72" y="145">Jardim Sul</text>
 									<text x="182" y="62">Ipê</text>
@@ -313,7 +339,7 @@
 					<p>Tudo termina num documento que a escola já conhece, só que preenchido, conferido e no prazo.</p>
 				</div>
 
-				<div class="documentos" aria-label="Exemplos de documentos gerados" data-aparecer>
+				<div class="documentos" role="group" aria-label="Exemplos de documentos gerados" data-aparecer>
 					<article class="documento">
 						<h3>Ata da Unidade Executora</h3>
 						<div class="linha-de-corte" aria-hidden="true">· · · · · · · · · · · · · · ·</div>
@@ -364,17 +390,39 @@
 				</div>
 			</section>
 
+			<section class="secao-para-quem com-margem-lateral" id="para-quem" aria-labelledby="titulo-para-quem">
+				<div class="diferencial" data-aparecer>
+					<h2 id="titulo-para-quem">O governo mostra o saldo. <span class="marca-texto">Nós entregamos a compra, os papéis e a rota.</span></h2>
+				</div>
+
+				<dl class="publico-e-modelo" data-aparecer>
+					<div class="publico-item">
+						<dt>Quem contrata</dt>
+						<dd>Secretarias municipais e estaduais de educação, que respondem pela rede inteira.</dd>
+					</div>
+					<div class="publico-item">
+						<dt>Quem usa</dt>
+						<dd>A secretaria acompanha a rede. Diretores e a Unidade Executora planejam e documentam. A logística recebe as rotas.</dd>
+					</div>
+					<div class="publico-item">
+						<dt>Quem paga</dt>
+						<dd>A rede, com uma assinatura por escola. Escolas, alunos e famílias não pagam nada.</dd>
+					</div>
+					<div class="publico-item">
+						<dt>O que é aberto</dt>
+						<dd>A consulta pelo código INEP, para qualquer escola pública, e a página pública para pais e conselho escolar.</dd>
+					</div>
+				</dl>
+			</section>
+
 			<section class="secao-perguntas com-margem-lateral" id="perguntas" aria-labelledby="titulo-perguntas">
 				<div class="perguntas-grade">
 					<h2 id="titulo-perguntas" data-aparecer><span>Perguntas diretas</span></h2>
 					<div class="respostas" data-aparecer>
-						<p><strong>Quem usa?</strong> A secretaria de educação acompanha a rede; diretores e a Unidade Executora planejam e documentam; a logística recebe as rotas; pais e conselho escolar veem a página pública.</p>
-						<p><strong>Quem paga?</strong> A prefeitura, com uma assinatura por escola. Escolas, alunos e famílias não pagam nada.</p>
 						<p><strong>De onde vêm os dados?</strong> Dos sistemas públicos do FNDE (PDDE Info e SIMAD), do Censo Escolar do INEP e da matrícula atual enviada pela secretaria. Cada número guarda a fonte e a hora da coleta.</p>
 						<p><strong>Usa dados pessoais?</strong> Não. Trabalhamos só com dados institucionais e públicos das escolas. Nenhum nome de aluno, diretor ou responsável aparece.</p>
 						<p><strong>A IA decide sozinha o que comprar?</strong> Não. Ela sugere, cita a regra do programa que permite cada item e passa por um validador. Quem aprova é a escola.</p>
 						<p><strong>Substitui os sistemas do governo?</strong> Não. Lemos o que eles publicam e deixamos tudo pronto para a escola prestar contas onde já presta.</p>
-						<p><strong>Funciona para qualquer escola?</strong> A consulta pelo código INEP é aberta a qualquer escola pública. Acompanhamento diário, alertas e remanejamento ficam com as redes que contratam.</p>
 						<p><strong>Por que dinheiro e livros juntos?</strong> Os dois param no mesmo lugar: entre o governo e o aluno. E é a mesma equipe da secretaria que cuida dos dois.</p>
 						<p><strong>E o livro de outra coleção?</strong> Só casamos sobra e falta da mesma obra. Redes com escolha unificada aproveitam mais trocas.</p>
 					</div>
@@ -406,9 +454,9 @@
 				</div>
 
 				<ul class="links-do-rodape">
-					<li><a href="https://github.com/JoaoBreganon/Hack-Brasil">Repositório no GitHub</a></li>
-					<li><a href="https://hackbrasil.com">Hack Brasil 2026</a></li>
-					<li><a href="https://hackbrasil.com/regulamento">Regulamento</a></li>
+					<li><a href="https://github.com/JoaoBreganon/Hack-Brasil" rel="noopener">Repositório no GitHub</a></li>
+					<li><a href="https://hackbrasil.com" rel="noopener">Hack Brasil 2026</a></li>
+					<li><a href="https://hackbrasil.com/regulamento" rel="noopener">Regulamento</a></li>
 				</ul>
 
 				<p class="creditos">Projeto do Hack Brasil 2026 · Trilha Acesso à educação · Dados públicos do FNDE e do INEP</p>
