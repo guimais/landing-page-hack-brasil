@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Nenhuma escola perde o que já é dela | PDDE e PNLD</title>
+		<meta name="description" content="Plataforma para secretarias de educação que encontra o dinheiro do PDDE parado e os livros do PNLD fora do lugar, e entrega plano de compra, documentos e rotas.">
+		<meta name="keywords" content="PDDE, PNLD, FNDE, escola pública, secretaria de educação, livro didático, remanejamento de livros, prestação de contas, Hack Brasil">
+		<meta name="author" content="Guilherme Carvalho Mais, Gabriel Duarte Frias, João Gabriel Breganon Ferreira">
+		<meta name="robots" content="index, follow, max-image-preview:large">
+		<link rel="canonical" href="https://seudominio.com.br/">
+		<meta name="theme-color" content="#0b0f1c">
+		<meta name="color-scheme" content="dark">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+
+		<meta property="og:type" content="website">
+		<meta property="og:locale" content="pt_BR">
+		<meta property="og:site_name" content="Nenhuma escola perde o que já é dela">
+		<meta property="og:title" content="Nenhuma escola perde o que já é dela">
+		<meta property="og:description" content="Encontramos o dinheiro do PDDE parado e os livros do PNLD fora do lugar, e entregamos a solução pronta para a secretaria de educação.">
+		<meta property="og:url" content="https://seudominio.com.br/">
+		<meta property="og:image" content="https://seudominio.com.br/img/og-image.png">
+		<meta property="og:image:width" content="1200">
+		<meta property="og:image:height" content="630">
+		<meta property="og:image:alt" content="Extrato da conta PDDE de uma escola com o título Nenhuma escola perde o que já é dela.">
+
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="Nenhuma escola perde o que já é dela">
+		<meta name="twitter:description" content="Dinheiro do PDDE e livros do PNLD chegando ao aluno.">
+		<meta name="twitter:image" content="https://seudominio.com.br/img/og-image.png">
+		<meta name="twitter:image:alt" content="Extrato da conta PDDE de uma escola com o título Nenhuma escola perde o que já é dela.">
+
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@graph": [
+					{
+						"@type": "WebSite",
+						"@id": "https://seudominio.com.br/#site",
+						"url": "https://seudominio.com.br/",
+						"name": "Nenhuma escola perde o que já é dela",
+						"inLanguage": "pt-BR"
+					},
+					{
+						"@type": "SoftwareApplication",
+						"name": "Nenhuma escola perde o que já é dela",
+						"applicationCategory": "BusinessApplication",
+						"operatingSystem": "Web",
+						"inLanguage": "pt-BR",
+						"url": "https://seudominio.com.br/",
+						"description": "Plataforma para secretarias de educação que monitora o PDDE e o PNLD, sugere o plano de compra, gera documentos e planeja o remanejamento de livros didáticos.",
+						"audience": {
+							"@type": "Audience",
+							"audienceType": "Secretarias municipais e estaduais de educação"
+						},
+						"creator": [
+							{ "@type": "Person", "name": "Guilherme Carvalho Mais" },
+							{ "@type": "Person", "name": "Gabriel Duarte Frias" },
+							{ "@type": "Person", "name": "João Gabriel Breganon Ferreira" }
+						]
+					}
+				]
+			}
+		</script>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Geist:wght@400..700&display=swap">
+		<link rel="stylesheet" href="css/styles.css">
+
+		<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/motion@11.18.2/dist/motion.js" defer></script>
+		<script src="js/script.js" defer></script>
+	</head>
+
+	<body>
+		<a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+		<main id="conteudo">
+			<header class="cabecalho">
+				<a class="marca" href="#conteudo" aria-label="Início">
+					<svg viewBox="0 0 28 28" aria-hidden="true">
+						<rect width="28" height="28" fill="#ffa06b"/>
+						<path d="M7 9h14M7 14h10M7 19h6" stroke="#0b0f1c" stroke-width="2.6"/>
+						<circle cx="20.5" cy="19" r="2.6" fill="#0b0f1c"/>
+					</svg>
+					pdde + pnld
+				</a>
+
+				<nav class="navegacao" aria-label="Seções da página">
+					<a href="#problema">O problema</a>
+					<a href="#como-funciona">Como funciona</a>
+					<a href="#entregas">Entregas</a>
+					<a href="#perguntas">Perguntas</a>
+				</nav>
+
+				<a class="botao botao-destaque" href="#hack-brasil">Projeto Hack Brasil</a>
+			</header>
+
+			<section class="abertura" aria-labelledby="titulo-principal">
+				<div class="cartao-extrato" id="cartao-extrato">
+					<span class="canto canto-superior-esquerdo" aria-hidden="true"></span>
+					<span class="canto canto-superior-direito" aria-hidden="true"></span>
+					<span class="canto canto-inferior-esquerdo" aria-hidden="true"></span>
+					<span class="canto canto-inferior-direito" aria-hidden="true"></span>
+
+					<h1 id="titulo-principal">
+						<span class="linha-do-titulo primeira-linha-do-titulo"><span class="texto-da-linha">Nenhuma escola perde</span></span>
+						<span class="linha-do-titulo segunda-linha-do-titulo"><span class="texto-da-linha realce-do-titulo">o que já é dela.</span></span>
+					</h1>
+					<p class="texto-de-apoio">Achamos o dinheiro do PDDE parado e os livros do PNLD fora do lugar. E entregamos a solução pronta.</p>
+					<div class="losango" aria-hidden="true"></div>
+
+					<div class="extrato">
+						<div class="extrato-cabecalho">
+							<span>Extrato da conta PDDE Básico</span>
+							<span>Escola exemplo</span>
+						</div>
+
+						<ul class="lancamentos" id="lancamentos">
+							<li class="lancamento">
+								<span class="lancamento-descricao">Saldo do ano anterior</span>
+								<span class="lancamento-pontilhado" aria-hidden="true"></span>
+								<span class="lancamento-valor">R$ 11.240,00</span>
+							</li>
+							<li class="lancamento">
+								<span class="lancamento-descricao">Repasse do PDDE Básico</span>
+								<span class="lancamento-pontilhado" aria-hidden="true"></span>
+								<span class="lancamento-valor">R$ 6.200,00</span>
+							</li>
+							<li class="lancamento">
+								<span class="lancamento-descricao">Rendimentos</span>
+								<span class="lancamento-pontilhado" aria-hidden="true"></span>
+								<span class="lancamento-valor">R$ 990,00</span>
+							</li>
+							<li class="lancamento lancamento-planejado">
+								<span class="lancamento-descricao">Acervo para a biblioteca<small>custeio · resolução do PDDE</small></span>
+								<span class="lancamento-pontilhado" aria-hidden="true"></span>
+								<span class="lancamento-valor">− R$ 6.800,00</span>
+							</li>
+							<li class="lancamento lancamento-planejado">
+								<span class="lancamento-descricao">Rede sem fio nas salas<small>capital</small></span>
+								<span class="lancamento-pontilhado" aria-hidden="true"></span>
+								<span class="lancamento-valor">− R$ 3.950,00</span>
+							</li>
+							<li class="lancamento lancamento-planejado">
+								<span class="lancamento-descricao">Rampa e corrimão<small>capital · acessibilidade</small></span>
+								<span class="lancamento-pontilhado" aria-hidden="true"></span>
+								<span class="lancamento-valor">− R$ 5.200,00</span>
+							</li>
+							<li class="lancamento lancamento-planejado">
+								<span class="lancamento-descricao">Material pedagógico<small>custeio</small></span>
+								<span class="lancamento-pontilhado" aria-hidden="true"></span>
+								<span class="lancamento-valor">− R$ 2.480,00</span>
+							</li>
+						</ul>
+
+						<div class="saldo-total">
+							<span id="rotulo-do-saldo">Saldo parado</span>
+							<strong id="valor-do-saldo" aria-live="polite">R$ 18.430,00</strong>
+						</div>
+						<p class="mensagem-de-status" id="mensagem-de-status">Se nada for feito, o saldo do PDDE Básico volta para o governo no prazo de fevereiro.</p>
+
+						<div class="acoes-do-extrato">
+							<button class="botao botao-destaque" id="botao-planejar-saldo" type="button" aria-controls="lancamentos" aria-pressed="false">
+								Planejar este saldo <span class="seta" aria-hidden="true">→</span>
+							</button>
+							<small>Escola e valores ilustrativos.</small>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="secao-problema" id="problema" aria-labelledby="titulo-problema">
+				<div class="titulo-em-movimento" id="titulo-em-movimento">
+					<h2 id="titulo-problema">Dinheiro parado. Livro fora do lugar.</h2>
+				</div>
+
+				<div class="problema-conteudo com-margem-lateral">
+					<div class="problema-explicacao" data-aparecer>
+						<p>O governo federal já mandou o recurso e os livros. Falta chegar ao aluno: saldo esquecido volta para Brasília, pendência trava o repasse, e o livro que sobra numa escola falta na vizinha.</p>
+					</div>
+
+					<dl class="numeros-do-problema" data-aparecer>
+						<div class="numero">
+							<dt data-contar data-valor="122.7" data-casas-decimais="1" data-prefixo="" data-sufixo=" mil">122,7 mil</dt>
+							<dd>escolas recebem o PDDE direto na conta</dd>
+						</div>
+						<div class="numero">
+							<dt data-contar data-valor="1.16" data-casas-decimais="2" data-prefixo="R$ " data-sufixo=" bi">R$ 1,16 bi</dt>
+							<dd>previstos para o PDDE Básico em 2025</dd>
+						</div>
+						<div class="numero">
+							<dt data-contar data-valor="194.6" data-casas-decimais="1" data-prefixo="" data-sufixo=" mi">194,6 mi</dt>
+							<dd>livros didáticos distribuídos em 2024</dd>
+						</div>
+						<div class="numero">
+							<dt data-contar data-valor="3" data-casas-decimais="0" data-prefixo="" data-sufixo="%">3%</dt>
+							<dd>é o teto da reserva técnica para cobrir falta de livro</dd>
+						</div>
+					</dl>
+				</div>
+			</section>
+
+			<section class="secao-como-funciona" id="como-funciona" aria-labelledby="titulo-como-funciona">
+				<div class="palco-horizontal com-margem-lateral" id="palco-horizontal">
+					<div class="como-funciona-cabecalho" data-aparecer>
+						<h2 id="titulo-como-funciona">Do alerta à entrega</h2>
+						<p>O mesmo caminho para o dinheiro e para os livros: perceber, decidir, fazer e mostrar.</p>
+					</div>
+
+					<div class="trilho-de-progresso" aria-hidden="true"><i id="barra-de-progresso"></i></div>
+
+					<div class="linha-de-etapas" id="linha-de-etapas" tabindex="0" aria-label="Etapas do processo, role para o lado">
+						<article class="etapa">
+							<h3>Todo dia, uma conferência</h3>
+							<p>Lemos os sistemas públicos do FNDE e trazemos, de cada escola, saldo, repasses, pendências e livros recebidos.</p>
+							<div class="espaco-variavel" aria-hidden="true"></div>
+							<div class="miniatura">
+								<span class="miniatura-titulo">Rede municipal · hoje</span>
+								<div class="miniatura-linha"><span><i class="indicador indicador-em-risco"></i>EM Aurora</span><span>em risco</span></div>
+								<div class="miniatura-linha"><span><i class="indicador indicador-pendente"></i>EM Jardim Sul</span><span>pendência</span></div>
+								<div class="miniatura-linha"><span><i class="indicador indicador-em-dia"></i>EM Vila Nova</span><span>em dia</span></div>
+								<div class="miniatura-linha"><span><i class="indicador indicador-em-risco"></i>EM Ipê</span><span>em risco</span></div>
+								<div class="miniatura-linha"><span><i class="indicador indicador-em-dia"></i>EM Lagoa</span><span>em dia</span></div>
+								<p class="miniatura-texto-secundario miniatura-rodape">Fonte: PDDE Info e SIMAD, coletados às 6h.</p>
+							</div>
+						</article>
+
+						<article class="etapa">
+							<h3>O risco ganha um prazo</h3>
+							<p>Separamos o que pode ser estornado do que não pode, e mostramos quanto falta para o dinheiro voltar.</p>
+							<div class="espaco-variavel" aria-hidden="true"></div>
+							<div class="miniatura">
+								<span class="miniatura-titulo">EM Aurora</span>
+								<span class="miniatura-texto-secundario">PDDE Básico em risco</span>
+								<span class="miniatura-valor">R$ 18.430</span>
+								<span class="miniatura-texto-secundario">Ações integradas: R$ 4.100, sem risco de estorno</span>
+								<div class="miniatura-rodape"><span class="etiqueta etiqueta-destaque">Planejar agora</span></div>
+							</div>
+						</article>
+
+						<article class="etapa">
+							<h3>A compra se desenha</h3>
+							<p>A IA cruza o saldo com o que falta na escola e com as regras do programa. Cada item cita a regra que o permite.</p>
+							<div class="espaco-variavel" aria-hidden="true"></div>
+							<div class="miniatura">
+								<span class="miniatura-titulo">Plano sugerido</span>
+								<div class="miniatura-linha"><span>Acervo da biblioteca</span><span class="etiqueta">custeio</span></div>
+								<div class="miniatura-linha"><span>Rede sem fio</span><span class="etiqueta">capital</span></div>
+								<div class="miniatura-linha"><span>Rampa e corrimão</span><span class="etiqueta">capital</span></div>
+								<div class="miniatura-linha"><span>Material pedagógico</span><span class="etiqueta">custeio</span></div>
+								<p class="miniatura-texto-secundario miniatura-rodape">Censo Escolar: escola sem biblioteca e sem acesso adaptado.</p>
+							</div>
+						</article>
+
+						<article class="etapa">
+							<h3>Três preços por item</h3>
+							<p>Buscamos orçamentos com link e data, prontos para a pesquisa de preços que a prestação de contas pede.</p>
+							<div class="espaco-variavel" aria-hidden="true"></div>
+							<div class="miniatura">
+								<span class="miniatura-titulo">Roteador Wi‑Fi 6</span>
+								<div class="miniatura-linha"><span>Loja A</span><strong>R$ 1.290,00</strong></div>
+								<div class="miniatura-linha"><span>Loja B</span><span>R$ 1.348,00</span></div>
+								<div class="miniatura-linha"><span>Loja C</span><span>R$ 1.415,90</span></div>
+								<div class="miniatura-rodape"><span class="etiqueta etiqueta-destaque">Menor preço: Loja A</span></div>
+							</div>
+						</article>
+
+						<article class="etapa">
+							<h3>Os papéis saem prontos</h3>
+							<p>Ata da Unidade Executora, consolidação de preços e checklist em PDF. A escola revisa, assina e compra.</p>
+							<div class="espaco-variavel" aria-hidden="true"></div>
+							<div class="miniatura">
+								<span class="miniatura-titulo">Ata da reunião pronta em PDF</span>
+								<div class="miniatura-documento">
+									<strong>Ata de reunião da Unidade Executora</strong>
+									<span>Aprovada a aplicação de R$ 18.430,00 do PDDE Básico em acervo, rede sem fio, rampa e material pedagógico.</span>
+									<span class="miniatura-texto-secundario miniatura-rodape">Presidente · Tesoureiro · Conselho</span>
+								</div>
+							</div>
+						</article>
+
+						<article class="etapa">
+							<h3>O livro muda de escola</h3>
+							<p>Comparamos o que chegou com a matrícula atual, casamos sobra e falta da mesma obra e traçamos a rota da van.</p>
+							<div class="espaco-variavel" aria-hidden="true"></div>
+							<div class="miniatura">
+								<span class="miniatura-titulo">Rota da van · 3 paradas</span>
+								<svg class="mapa-da-rota" viewBox="0 0 240 190" role="img" aria-label="Mapa com a rota da van entre três escolas">
+									<path class="rua" d="M0 40h240M0 120h240M60 0v190M170 0v190M0 175l240-70" stroke="#232a40" stroke-width="9" fill="none"/>
+									<path d="M40 40 L60 40 L60 120 L170 120 L170 70" stroke="#ffa06b" stroke-width="4" fill="none" stroke-linejoin="round"/>
+									<circle cx="40" cy="40" r="8" fill="#ece8df"/>
+									<circle cx="60" cy="120" r="8" fill="#ffa06b"/>
+									<circle cx="170" cy="70" r="8" fill="#ffa06b"/>
+									<text x="34" y="24">Aurora</text>
+									<text x="72" y="145">Jardim Sul</text>
+									<text x="182" y="62">Ipê</text>
+								</svg>
+								<p class="miniatura-texto-secundario miniatura-rodape">6 caixas · 214 alunos com livro</p>
+							</div>
+						</article>
+					</div>
+				</div>
+			</section>
+
+			<section class="secao-entregas" id="entregas" aria-labelledby="titulo-entregas">
+				<div class="entregas-texto" data-aparecer>
+					<h2 id="titulo-entregas">Papel pronto. Ninguém começa do zero.</h2>
+					<p>Tudo termina num documento que a escola já conhece, só que preenchido, conferido e no prazo.</p>
+				</div>
+
+				<div class="documentos" aria-label="Exemplos de documentos gerados" data-aparecer>
+					<article class="documento">
+						<h3>Ata da Unidade Executora</h3>
+						<div class="linha-de-corte" aria-hidden="true">· · · · · · · · · · · · · · ·</div>
+						<p>Aprovada a aplicação de R$ 18.430,00 em acervo, rede sem fio, rampa e material pedagógico.</p>
+						<p>Assinaturas: 3 de 3</p>
+					</article>
+					<article class="documento">
+						<h3>Consolidação de preços</h3>
+						<div class="linha-de-corte" aria-hidden="true">· · · · · · · · · · · · · · ·</div>
+						<p class="documento-linha"><span>Loja A</span><span>1.290,00</span></p>
+						<p class="documento-linha"><span>Loja B</span><span>1.348,00</span></p>
+						<p class="documento-linha"><span>Loja C</span><span>1.415,90</span></p>
+						<p>Escolhido: Loja A</p>
+					</article>
+					<article class="documento">
+						<h3>Guia de remessa · van 1</h3>
+						<div class="linha-de-corte" aria-hidden="true">· · · · · · · · · · · · · · ·</div>
+						<p>Saída: EM Aurora</p>
+						<p>4 caixas · Matemática 6º ano</p>
+						<p>Entrega: EM Jardim Sul</p>
+						<p>2 caixas · Ciências 7º ano</p>
+						<p>Entrega: EM Ipê</p>
+						<p>Recebido por: ____________</p>
+					</article>
+					<article class="documento">
+						<h3>Alerta da semana</h3>
+						<div class="linha-de-corte" aria-hidden="true">· · · · · · · · · · · · · · ·</div>
+						<p>3 escolas com saldo em risco</p>
+						<p>1 pendência de cadastro</p>
+						<p>2 remanejamentos prontos</p>
+					</article>
+					<article class="documento">
+						<h3>Plano de compra</h3>
+						<div class="linha-de-corte" aria-hidden="true">· · · · · · · · · · · · · · ·</div>
+						<p class="documento-linha"><span>Custeio</span><span>9.280,00</span></p>
+						<p class="documento-linha"><span>Capital</span><span>9.150,00</span></p>
+						<p class="documento-linha"><span>Total</span><span>18.430,00</span></p>
+						<p>Regra citada em cada item</p>
+					</article>
+					<article class="documento">
+						<h3>Página pública</h3>
+						<div class="linha-de-corte" aria-hidden="true">· · · · · · · · · · · · · · ·</div>
+						<p class="documento-linha"><span>Recebido</span><span>18.430,00</span></p>
+						<p class="documento-linha"><span>Planejado</span><span>18.430,00</span></p>
+						<p class="documento-linha"><span>Parado</span><span>0,00</span></p>
+						<p>Atualizado hoje</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="secao-perguntas com-margem-lateral" id="perguntas" aria-labelledby="titulo-perguntas">
+				<div class="perguntas-grade">
+					<h2 id="titulo-perguntas" data-aparecer><span>Perguntas diretas</span></h2>
+					<div class="respostas" data-aparecer>
+						<p><strong>Quem usa?</strong> A secretaria de educação acompanha a rede; diretores e a Unidade Executora planejam e documentam; a logística recebe as rotas; pais e conselho escolar veem a página pública.</p>
+						<p><strong>Quem paga?</strong> A prefeitura, com uma assinatura por escola. Escolas, alunos e famílias não pagam nada.</p>
+						<p><strong>De onde vêm os dados?</strong> Dos sistemas públicos do FNDE (PDDE Info e SIMAD), do Censo Escolar do INEP e da matrícula atual enviada pela secretaria. Cada número guarda a fonte e a hora da coleta.</p>
+						<p><strong>Usa dados pessoais?</strong> Não. Trabalhamos só com dados institucionais e públicos das escolas. Nenhum nome de aluno, diretor ou responsável aparece.</p>
+						<p><strong>A IA decide sozinha o que comprar?</strong> Não. Ela sugere, cita a regra do programa que permite cada item e passa por um validador. Quem aprova é a escola.</p>
+						<p><strong>Substitui os sistemas do governo?</strong> Não. Lemos o que eles publicam e deixamos tudo pronto para a escola prestar contas onde já presta.</p>
+						<p><strong>Funciona para qualquer escola?</strong> A consulta pelo código INEP é aberta a qualquer escola pública. Acompanhamento diário, alertas e remanejamento ficam com as redes que contratam.</p>
+						<p><strong>Por que dinheiro e livros juntos?</strong> Os dois param no mesmo lugar: entre o governo e o aluno. E é a mesma equipe da secretaria que cuida dos dois.</p>
+						<p><strong>E o livro de outra coleção?</strong> Só casamos sobra e falta da mesma obra. Redes com escolha unificada aproveitam mais trocas.</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="secao-hack-brasil" id="hack-brasil" aria-labelledby="titulo-hack-brasil">
+				<div data-aparecer>
+					<h2 id="titulo-hack-brasil">Somos um projeto do Hack Brasil 2026.</h2>
+				</div>
+			</section>
+		</main>
+
+		<footer class="rodape" aria-labelledby="titulo-rodape" data-aparecer>
+			<div class="verso-do-cartao">
+				<div class="selo" aria-hidden="true">
+					<svg viewBox="0 0 76 100">
+						<rect width="76" height="100" fill="#ffa06b"/>
+						<path d="M16 34c8-4 16-4 22 2 6-6 14-6 22-2v38c-8-4-16-4-22 2-6-6-14-6-22-2Z" fill="#0b0f1c"/>
+						<path d="M38 36v36" stroke="#ffa06b" stroke-width="2.5"/>
+						<text x="38" y="20">PDDE</text>
+						<text x="38" y="90">PNLD</text>
+					</svg>
+				</div>
+
+				<div>
+					<h2 id="titulo-rodape">Feito para a escola.</h2>
+					<p class="equipe">Guilherme Carvalho Mais, Gabriel Duarte Frias e João Gabriel Breganon Ferreira.</p>
+				</div>
+
+				<ul class="links-do-rodape">
+					<li><a href="https://github.com/JoaoBreganon/Hack-Brasil">Repositório no GitHub</a></li>
+					<li><a href="https://hackbrasil.com">Hack Brasil 2026</a></li>
+					<li><a href="https://hackbrasil.com/regulamento">Regulamento</a></li>
+				</ul>
+
+				<p class="creditos">Projeto do Hack Brasil 2026 · Trilha Acesso à educação · Dados públicos do FNDE e do INEP</p>
+			</div>
+		</footer>
+	</body>
+</html>
