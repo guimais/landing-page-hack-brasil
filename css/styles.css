@@ -506,7 +506,7 @@ a {
 }
 
 .secao-problema {
-	overflow: hidden;
+	overflow: clip;
 	padding-block: 140px 150px;
 }
 
@@ -1427,6 +1427,106 @@ a {
 @keyframes esticar-o-realce {
 	from {
 		transform: scaleX(0);
+	}
+}
+
+@media (max-width: 767px) {
+	.cena-horizontal .palco-horizontal {
+		clip-path: none;
+	}
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.rolagem-por-css .secao-problema {
+			timeline-scope: --linha-do-titulo;
+		}
+
+		.rolagem-por-css .titulo-em-movimento {
+			view-timeline: --linha-do-titulo block;
+		}
+
+		.rolagem-por-css .titulo-deslizando h2 {
+			animation: deslizar-o-titulo linear both;
+			animation-timeline: --linha-do-titulo;
+			animation-range: cover 0% cover 100%;
+		}
+
+		.rolagem-por-css .titulo-encaixando .trecho-do-titulo {
+			animation: encaixar-pela-esquerda linear both;
+			animation-timeline: --linha-do-titulo;
+			animation-range: cover 0% cover 45%;
+		}
+
+		.rolagem-por-css .titulo-encaixando .trecho-do-titulo:nth-child(even) {
+			animation-name: encaixar-pela-direita;
+		}
+
+		.rolagem-por-css .cena-horizontal {
+			view-timeline: --cena-das-etapas block;
+		}
+
+		.rolagem-por-css .cena-horizontal .linha-de-etapas,
+		.rolagem-por-css .cena-horizontal .trilho-de-progresso i {
+			animation-timeline: --cena-das-etapas;
+			animation-range: contain 0% contain calc(100% - 20svh);
+			animation-fill-mode: both;
+			animation-timing-function: linear;
+		}
+
+		.rolagem-por-css .cena-horizontal .linha-de-etapas {
+			animation-name: correr-as-etapas;
+		}
+
+		.rolagem-por-css .cena-horizontal .trilho-de-progresso i {
+			animation-name: encher-o-progresso;
+		}
+	}
+}
+
+@keyframes deslizar-o-titulo {
+	from {
+		transform: translate3d(30vw, 0, 0);
+	}
+
+	to {
+		transform: translate3d(calc(var(--distancia-do-titulo, 0px) * -1), 0, 0);
+	}
+}
+
+@keyframes encaixar-pela-esquerda {
+	from {
+		transform: translate3d(-70vw, 0, 0);
+	}
+
+	to {
+		transform: none;
+	}
+}
+
+@keyframes encaixar-pela-direita {
+	from {
+		transform: translate3d(70vw, 0, 0);
+	}
+
+	to {
+		transform: none;
+	}
+}
+
+@keyframes correr-as-etapas {
+	to {
+		transform: translate3d(calc(var(--distancia-das-etapas, 0px) * -1), 0, 0);
+	}
+}
+
+@keyframes encher-o-progresso {
+	from {
+		transform: scaleX(0.14);
+	}
+
+	to {
+		transform: scaleX(1);
 	}
 }
 

@@ -5,6 +5,8 @@ const bibliotecaDeAnimacao = window.Motion;
 const BibliotecaDeRolagemSuave = window.Lenis;
 const navegadorControladoPorAutomacao = navigator.webdriver;
 const animacoesEstaoLiberadas = Boolean(bibliotecaDeAnimacao) && !usuarioPrefereMenosMovimento;
+const rolagemAnimadaPeloNavegador = window.CSS?.supports('animation-timeline: view()') ?? false;
+const telaDeToque = window.matchMedia('(pointer: coarse)').matches;
 const consultaDeTelaBaixa = window.matchMedia('(max-height: 560px)');
 const consultaDeTelaEstreita = window.matchMedia('(max-width: 767px)');
 
@@ -21,6 +23,7 @@ const mascaraAberta = 'inset(0% 0% 0% 0%)';
 const suavidadeDaRolagem = 0.12;
 const proporcaoMinimaDaBarraDeProgresso = 0.14;
 const pausaNoFimDaCenaHorizontal = 0.2;
+const deslocamentoInicialDoTitulo = 0.3;
 const deslocamentoDosTrechosDoTitulo = 0.7;
 const pontoDeEncaixeDoTitulo = 0.45;
 
@@ -96,6 +99,7 @@ function iniciarPagina() {
 
 	if (animacoesEstaoLiberadas) {
 		raizDaPagina.classList.add('animacoes-ativas');
+		raizDaPagina.classList.toggle('rolagem-por-css', rolagemAnimadaPeloNavegador);
 		ativarCenaHorizontal();
 		ativarTituloEmMovimento();
 		ativarRevelacoesAoRolar();
@@ -129,6 +133,7 @@ function agendarMedicoes() {
 
 function ativarRolagemSuave() {
 	const podeSuavizarRolagem = BibliotecaDeRolagemSuave
+		&& !telaDeToque
 		&& !usuarioPrefereMenosMovimento
 		&& !navegadorControladoPorAutomacao;
 
@@ -198,6 +203,7 @@ function ativarCenaHorizontal() {
 
 		const alturaDoPalco = palcoHorizontal.clientHeight;
 		distanciaHorizontalDasEtapas = Math.max(0, linhaDeEtapas.scrollWidth - linhaDeEtapas.clientWidth);
+		secaoComoFunciona.style.setProperty('--distancia-das-etapas', `${distanciaHorizontalDasEtapas}px`);
 
 		const alturaDaCena = alturaDoPalco * (1 + pausaNoFimDaCenaHorizontal) + distanciaHorizontalDasEtapas;
 		secaoComoFunciona.style.setProperty('--altura-da-cena', `${alturaDaCena}px`);
@@ -222,6 +228,10 @@ function ativarCenaHorizontal() {
 	registrarMedicao(medirCena);
 	consultaDeTelaBaixa.addEventListener('change', aplicarModoDaCena);
 	aplicarModoDaCena();
+
+	if (rolagemAnimadaPeloNavegador) {
+		return;
+	}
 
 	bibliotecaDeAnimacao.scroll((progresso) => {
 		if (consultaDeTelaBaixa.matches || distanciaHorizontalDasEtapas === 0) {
@@ -254,6 +264,7 @@ function ativarTituloEmMovimento() {
 
 	const medirTitulo = () => {
 		distanciaDoTituloEmMovimento = Math.max(0, tituloDoProblema.scrollWidth - tituloEmMovimento.clientWidth);
+		tituloDoProblema.style.setProperty('--distancia-do-titulo', `${distanciaDoTituloEmMovimento}px`);
 	};
 
 	const limparDeslocamentos = () => {
@@ -272,7 +283,8 @@ function ativarTituloEmMovimento() {
 	};
 
 	const deslizarTituloInteiro = (progresso) => {
-		const deslocamento = Math.round(-distanciaDoTituloEmMovimento * progresso);
+		const deslocamentoInicial = deslocamentoInicialDoTitulo * window.innerWidth * (1 - progresso);
+		const deslocamento = Math.round(deslocamentoInicial - distanciaDoTituloEmMovimento * progresso);
 		tituloDoProblema.style.transform = `translate3d(${deslocamento}px, 0, 0)`;
 	};
 
@@ -289,6 +301,10 @@ function ativarTituloEmMovimento() {
 	registrarMedicao(medirTitulo);
 	consultaDeTelaEstreita.addEventListener('change', aplicarModoDoTitulo);
 	aplicarModoDoTitulo();
+
+	if (rolagemAnimadaPeloNavegador) {
+		return;
+	}
 
 	bibliotecaDeAnimacao.scroll((progresso) => {
 		const progressoArredondado = Math.round(progresso * 1000) / 1000;
@@ -342,7 +358,7 @@ function mostrarLancamentosPlanejados() {
 		return;
 	}
 
-	bibliotecaDeAnimacao.animate(lancamentosPlanejados, { opacity: [0, 1], x: [-16, 0] }, {
+	bibliotecaDeAnimacao.animate(lancamentosPlanejados, { opacity: [0, 1], transform: ['translateX(-16px)', 'translateX(0px)'] }, {
 		delay: bibliotecaDeAnimacao.stagger(0.12),
 		duration: 0.7,
 		ease: curvaDeDesaceleracao,
@@ -459,7 +475,7 @@ function revelarParte(parte, atraso, blocoDeDocumentos) {
 	parte.classList.add('parte-revelada');
 
 	if (parte.tagName === 'H2') {
-		animar(parte, { opacity: [0, 1], clipPath: [mascaraFechada, mascaraAberta], y: [40, 0] }, {
+		animar(parte, { opacity: [0, 1], clipPath: [mascaraFechada, mascaraAberta], transform: ['translateY(40px)', 'translateY(0px)'] }, {
 			delay: atraso,
 			duration: duracaoDaRevelacaoDosTitulos,
 			ease: curvaDeDesaceleracao,
@@ -469,7 +485,7 @@ function revelarParte(parte, atraso, blocoDeDocumentos) {
 
 	animar(parte, {
 		opacity: [0, 1],
-		y: [blocoDeDocumentos ? distanciaDaEntradaDosDocumentos : distanciaDasEntradas, 0],
+		transform: [`translateY(${blocoDeDocumentos ? distanciaDaEntradaDosDocumentos : distanciaDasEntradas}px)`, 'translateY(0px)'],
 	}, {
 		delay: atraso,
 		duration: duracaoDasEntradas,
