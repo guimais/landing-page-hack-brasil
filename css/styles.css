@@ -854,38 +854,6 @@ a {
 	background: #b9b4a8;
 }
 
-.mapa-da-rota {
-	width: 100%;
-	height: auto;
-}
-
-.mapa-da-rota .rua {
-	fill: none;
-	stroke: #232a40;
-	stroke-width: 9;
-}
-
-.mapa-da-rota .rota {
-	fill: none;
-	stroke: var(--cor-cantalupo);
-	stroke-linejoin: round;
-	stroke-width: 4;
-}
-
-.mapa-da-rota .parada-de-saida {
-	fill: var(--cor-do-papel);
-}
-
-.mapa-da-rota .parada-de-entrega {
-	fill: var(--cor-cantalupo);
-}
-
-.mapa-da-rota text {
-	fill: var(--cor-do-papel);
-	font-family: var(--fonte-da-leitura);
-	font-size: 12px;
-}
-
 .secao-entregas {
 	padding: 140px var(--margem-lateral) 150px;
 	background:
@@ -1257,6 +1225,15 @@ a {
 
 	.cartao-extrato {
 		padding: 44px 16px 56px;
+	}
+
+	.lancamento-descricao {
+		flex: 0 1 auto;
+		min-width: 0;
+	}
+
+	.lancamento-pontilhado {
+		min-width: 12px;
 	}
 
 	.cartao-aviso {
