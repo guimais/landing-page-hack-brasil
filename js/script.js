@@ -5,6 +5,7 @@ const bibliotecaDeAnimacao = window.Motion;
 const BibliotecaDeRolagemSuave = window.Lenis;
 const navegadorControladoPorAutomacao = navigator.webdriver;
 const animacoesEstaoLiberadas = Boolean(bibliotecaDeAnimacao) && !usuarioPrefereMenosMovimento;
+const consultaDeTelaCompacta = window.matchMedia('(max-width: 767px), (max-height: 560px)');
 
 const curvaDeDesaceleracao = [0.22, 1, 0.36, 1];
 const curvaComImpulso = [0.34, 1.4, 0.64, 1];
@@ -68,11 +69,15 @@ const blocosQueAparecemAoRolar = document.querySelectorAll('[data-aparecer]');
 const numerosQueContam = document.querySelectorAll('[data-contar]');
 
 const medicoesAoRedimensionar = [];
+const filaDeRevelacao = [];
+const partesJaEnfileiradas = new WeakSet();
 
 let rolagemSuave = null;
 let saldoEstaPlanejado = false;
 let cancelarContagemDoSaldo = null;
 let medicaoAgendada = false;
+let revelacaoAgendada = false;
+let ultimaLarguraMedida = window.innerWidth;
 let distanciaHorizontalDasEtapas = 0;
 let distanciaDoTituloEmMovimento = 0;
 
@@ -83,13 +88,13 @@ function iniciarPagina() {
 	ativarLinksInternos();
 	ativarBotaoDePlanejarSaldo();
 
+	ativarRolagemManualDasEtapas();
+
 	if (animacoesEstaoLiberadas) {
 		raizDaPagina.classList.add('animacoes-ativas');
 		ativarCenaHorizontal();
 		ativarTituloEmMovimento();
 		ativarRevelacoesAoRolar();
-	} else {
-		ativarRolagemManualDasEtapas();
 	}
 
 	window.addEventListener('resize', agendarMedicoes, { passive: true });
@@ -103,11 +108,14 @@ function registrarMedicao(medir) {
 
 function executarMedicoes() {
 	medicaoAgendada = false;
+	ultimaLarguraMedida = window.innerWidth;
 	medicoesAoRedimensionar.forEach((medir) => medir());
 }
 
 function agendarMedicoes() {
-	if (medicaoAgendada) {
+	const larguraNaoMudou = window.innerWidth === ultimaLarguraMedida;
+
+	if (medicaoAgendada || larguraNaoMudou) {
 		return;
 	}
 
@@ -168,6 +176,7 @@ function ativarRolagemManualDasEtapas() {
 	};
 
 	linhaDeEtapas.addEventListener('scroll', acompanharRolagemManual, { passive: true });
+	consultaDeTelaCompacta.addEventListener('change', acompanharRolagemManual);
 	acompanharRolagemManual();
 }
 
@@ -176,26 +185,47 @@ function ativarCenaHorizontal() {
 		return;
 	}
 
-	secaoComoFunciona.classList.add('cena-horizontal');
-	linhaDeEtapas.removeAttribute('tabindex');
-
-	registrarMedicao(() => {
-		const ultimaEtapa = etapas[etapas.length - 1];
-		const inicioDaLinha = linhaDeEtapas.getBoundingClientRect().left;
-		const fimDaUltimaEtapa = ultimaEtapa.getBoundingClientRect().right;
-		const larguraTotalDasEtapas = fimDaUltimaEtapa - inicioDaLinha;
-		const alturaDaTela = window.innerHeight;
-
-		distanciaHorizontalDasEtapas = Math.max(0, larguraTotalDasEtapas - linhaDeEtapas.clientWidth);
-
-		const alturaDaCena = alturaDaTela + distanciaHorizontalDasEtapas + alturaDaTela * pausaNoFimDaCenaHorizontal;
-		secaoComoFunciona.style.setProperty('--altura-da-cena', `${alturaDaCena}px`);
-	});
-
 	let ultimoDeslocamentoDasEtapas = null;
 
+	const medirCena = () => {
+		if (consultaDeTelaCompacta.matches) {
+			return;
+		}
+
+		const alturaDoPalco = palcoHorizontal.clientHeight;
+		distanciaHorizontalDasEtapas = Math.max(0, linhaDeEtapas.scrollWidth - linhaDeEtapas.clientWidth);
+
+		const alturaDaCena = alturaDoPalco * (1 + pausaNoFimDaCenaHorizontal) + distanciaHorizontalDasEtapas;
+		secaoComoFunciona.style.setProperty('--altura-da-cena', `${alturaDaCena}px`);
+	};
+
+	const aplicarModoDaCena = () => {
+		const cenaFixaNaTela = !consultaDeTelaCompacta.matches;
+
+		secaoComoFunciona.classList.toggle('cena-horizontal', cenaFixaNaTela);
+
+		if (cenaFixaNaTela) {
+			linhaDeEtapas.removeAttribute('tabindex');
+		} else {
+			linhaDeEtapas.setAttribute('tabindex', '0');
+			linhaDeEtapas.style.transform = '';
+			ultimoDeslocamentoDasEtapas = null;
+		}
+
+		medirCena();
+	};
+
+	registrarMedicao(medirCena);
+	consultaDeTelaCompacta.addEventListener('change', aplicarModoDaCena);
+	aplicarModoDaCena();
+
 	bibliotecaDeAnimacao.scroll((progresso) => {
-		const progressoDoMovimento = Math.min(1, progresso * (1 + pausaNoFimDaCenaHorizontal));
+		if (consultaDeTelaCompacta.matches || distanciaHorizontalDasEtapas === 0) {
+			return;
+		}
+
+		const percursoComPausa = distanciaHorizontalDasEtapas + palcoHorizontal.clientHeight * pausaNoFimDaCenaHorizontal;
+		const progressoDoMovimento = Math.min(1, progresso * percursoComPausa / distanciaHorizontalDasEtapas);
 		const deslocamento = Math.round(-distanciaHorizontalDasEtapas * progressoDoMovimento);
 
 		if (deslocamento === ultimoDeslocamentoDasEtapas) {
@@ -216,15 +246,42 @@ function ativarTituloEmMovimento() {
 		return;
 	}
 
-	tituloEmMovimento.classList.add('titulo-deslizando');
-
-	registrarMedicao(() => {
-		distanciaDoTituloEmMovimento = Math.max(0, tituloDoProblema.scrollWidth - tituloEmMovimento.clientWidth);
-	});
-
 	let ultimoDeslocamentoDoTitulo = null;
 
+	const medirTitulo = () => {
+		distanciaDoTituloEmMovimento = Math.max(0, tituloDoProblema.scrollWidth - tituloEmMovimento.clientWidth);
+	};
+
+	const aplicarModoDoTitulo = () => {
+		const tituloDesliza = !consultaDeTelaCompacta.matches;
+
+		tituloEmMovimento.classList.toggle('titulo-deslizando', tituloDesliza);
+
+		if (!tituloDesliza) {
+			tituloDoProblema.style.transform = '';
+			ultimoDeslocamentoDoTitulo = null;
+		}
+
+		medirTitulo();
+	};
+
+	registrarMedicao(medirTitulo);
+	consultaDeTelaCompacta.addEventListener('change', aplicarModoDoTitulo);
+	aplicarModoDoTitulo();
+
+	bibliotecaDeAnimacao.inView(tituloEmMovimento, () => {
+		tituloEmMovimento.classList.add('titulo-revelado');
+
+		if (consultaDeTelaCompacta.matches) {
+			revelarParte(tituloDoProblema, 0, false);
+		}
+	}, { amount: 0.4 });
+
 	bibliotecaDeAnimacao.scroll((progresso) => {
+		if (consultaDeTelaCompacta.matches) {
+			return;
+		}
+
 		const deslocamento = Math.round(-distanciaDoTituloEmMovimento * progresso);
 
 		if (deslocamento === ultimoDeslocamentoDoTitulo) {
@@ -338,7 +395,11 @@ function ativarRevelacoesAoRolar() {
 	const { inView: quandoAparecer } = bibliotecaDeAnimacao;
 
 	blocosQueAparecemAoRolar.forEach((bloco) => {
-		quandoAparecer(bloco, () => revelarBloco(bloco), { amount: 0.15 });
+		const blocoDeDocumentos = bloco.classList.contains('documentos');
+
+		Array.from(bloco.children).forEach((parte) => {
+			quandoAparecer(parte, () => enfileirarRevelacao(parte, blocoDeDocumentos), { amount: 0.2 });
+		});
 	});
 
 	numerosQueContam.forEach((numero) => {
@@ -346,32 +407,59 @@ function ativarRevelacoesAoRolar() {
 	});
 }
 
-function revelarBloco(bloco) {
-	const { animate: animar } = bibliotecaDeAnimacao;
-	const blocoDeDocumentos = bloco.classList.contains('documentos');
+function enfileirarRevelacao(parte, blocoDeDocumentos) {
+	const partesAnterioresPuladas = [];
+	let parteAnterior = parte.previousElementSibling;
 
-	bloco.classList.add('bloco-revelado');
+	while (parteAnterior) {
+		partesAnterioresPuladas.unshift(parteAnterior);
+		parteAnterior = parteAnterior.previousElementSibling;
+	}
 
-	Array.from(bloco.children).forEach((parte, posicao) => {
-		const atraso = posicao * intervaloEntreEntradas;
-
-		if (parte.tagName === 'H2') {
-			animar(parte, { opacity: [0, 1], clipPath: [mascaraFechada, mascaraAberta], y: [40, 0] }, {
-				delay: atraso,
-				duration: duracaoDaRevelacaoDosTitulos,
-				ease: curvaDeDesaceleracao,
-			});
-			return;
-		}
-
-		animar(parte, {
-			opacity: [0, 1],
-			y: [blocoDeDocumentos ? distanciaDaEntradaDosDocumentos : distanciaDasEntradas, 0],
-		}, {
-			delay: atraso,
-			duration: duracaoDasEntradas,
-			ease: blocoDeDocumentos ? curvaComImpulso : curvaDeDesaceleracao,
+	[...partesAnterioresPuladas, parte]
+		.filter((parteDoBloco) => !partesJaEnfileiradas.has(parteDoBloco))
+		.forEach((parteDoBloco) => {
+			partesJaEnfileiradas.add(parteDoBloco);
+			filaDeRevelacao.push({ parte: parteDoBloco, blocoDeDocumentos });
 		});
+
+	if (revelacaoAgendada) {
+		return;
+	}
+
+	revelacaoAgendada = true;
+	requestAnimationFrame(revelarFila);
+}
+
+function revelarFila() {
+	revelacaoAgendada = false;
+
+	filaDeRevelacao.splice(0).forEach(({ parte, blocoDeDocumentos }, posicao) => {
+		revelarParte(parte, posicao * intervaloEntreEntradas, blocoDeDocumentos);
+	});
+}
+
+function revelarParte(parte, atraso, blocoDeDocumentos) {
+	const { animate: animar } = bibliotecaDeAnimacao;
+
+	parte.classList.add('parte-revelada');
+
+	if (parte.tagName === 'H2') {
+		animar(parte, { opacity: [0, 1], clipPath: [mascaraFechada, mascaraAberta], y: [40, 0] }, {
+			delay: atraso,
+			duration: duracaoDaRevelacaoDosTitulos,
+			ease: curvaDeDesaceleracao,
+		});
+		return;
+	}
+
+	animar(parte, {
+		opacity: [0, 1],
+		y: [blocoDeDocumentos ? distanciaDaEntradaDosDocumentos : distanciaDasEntradas, 0],
+	}, {
+		delay: atraso,
+		duration: duracaoDasEntradas,
+		ease: blocoDeDocumentos ? curvaComImpulso : curvaDeDesaceleracao,
 	});
 }
 
